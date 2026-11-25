@@ -1,0 +1,106 @@
+{
+  "boundary_checks": [
+    {
+      "artifact": "rippled_plane",
+      "bend_mode": "normal",
+      "edge_displacements": {
+        "u0": 3.3306690738754696e-16,
+        "u1": 4.710277376051325e-16,
+        "v0": 3.3306690738754696e-16,
+        "v1": 4.710277376051325e-16
+      },
+      "interior_displacement": 0.01009058990700406,
+      "hard_constraint_error": 3.3306690738754696e-16,
+      "energy_before": 0.9643518406284979,
+      "energy_after": 0.004227881933222311,
+      "energy_reduction_ratio": 0.9956158304934982,
+      "checks": {
+        "boundary_fixed": true,
+        "interior_changed": true,
+        "hard_error_ok": true,
+        "energy_decreased": "True"
+      },
+      "passes": true
+    },
+    {
+      "artifact": "rippled_curved",
+      "bend_mode": "jerk",
+      "edge_displacements": {
+        "u0": 3.3306690738754696e-16,
+        "u1": 4.710277376051325e-16,
+        "v0": 3.3306690738754696e-16,
+        "v1": 4.710277376051325e-16
+      },
+      "interior_displacement": 0.002524235065235315,
+      "hard_constraint_error": 3.3306690738754696e-16,
+      "energy_before": 34364.87571319857,
+      "energy_after": 22945.50262046455,
+      "energy_reduction_ratio": 0.33229781443231476,
+      "checks": {
+        "boundary_fixed": true,
+        "interior_changed": true,
+        "hard_error_ok": true,
+        "energy_decreased": "True"
+      },
+      "passes": true
+    }
+  ],
+  "maintenance": {
+    "prune": {
+      "kind": "prune",
+      "all_units": [
+        "hard edge lock u0",
+        "hard edge lock u1",
+        "hard edge lock v0",
+        "hard edge lock v1",
+        "key point S(0.000,0.500)"
+      ],
+      "minimal_conflict": [
+        "hard edge lock u0",
+        "key point S(0.000,0.500)"
+      ],
+      "removed": "key point S(0.000,0.500)",
+      "recompute_error": null,
+      "reactivation_gap": 0.5,
+      "reactivation_condition": "removed constraint reactivates only if its target is changed to [0.  0.5 0. ] (gap 0.5), or if the conflicting partner is removed or relaxed",
+      "hard_error_after_removal": 3.3306690738754696e-16,
+      "boundary_after_removal": {
+        "u0": 3.3306690738754696e-16,
+        "u1": 4.710277376051325e-16,
+        "v0": 3.3306690738754696e-16,
+        "v1": 4.710277376051325e-16
+      }
+    },
+    "relax": {
+      "kind": "relax",
+      "minimal_conflict": null,
+      "edges": [
+        {
+          "kind": "relax",
+          "a": "hard constraints",
+          "b": "soft ridge/ring lock u0",
+          "min_deviation": 9.55285355636835e-05,
+          "feasible_at_tolerance": true
+        }
+      ],
+      "relaxation_boundary": {
+        "weights": [
+          1.0,
+          10.0,
+          100.0,
+          1000.0
+        ],
+        "deviations": [
+          0.01041732312011339,
+          0.004520987295599796,
+          0.0008685508066822331,
+          9.55285355636835e-05
+        ],
+        "min_weight_feasible": 100.0,
+        "min_deviation": 9.55285355636835e-05,
+        "feasible_at_tolerance": true,
+        "tolerance": 0.001
+      }
+    }
+  }
+}

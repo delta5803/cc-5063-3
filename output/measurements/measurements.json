@@ -30,8 +30,7 @@
     "high_frequency_rms_before": 0.0015464692275572475,
     "high_frequency_rms_after": 9.080164460925676e-05,
     "soft_relaxation_events": [],
-    "solver_message": "optimal",
-    "faired": "<surface_fairing.core.bspline.BSplineSurface object at 0xffff63fbb550>"
+    "solver_message": "optimal"
   },
   "curved": {
     "name": "rippled_curved",
@@ -65,7 +64,6 @@
     "high_frequency_rms_after": 0.007983289615490954,
     "soft_relaxation_events": [],
     "solver_message": "optimal",
-    "faired": "<surface_fairing.core.bspline.BSplineSurface object at 0xffff63fef910>",
     "base_dome_retention": {
       "rms_to_smooth_base_before": 0.001136824988476505,
       "rms_to_smooth_base_after": 0.0009882754095771578,
@@ -149,9 +147,7 @@
     "aggressive_no_lock_key_height": 0.05228592631961223,
     "locked_key_height": 0.0674611381217507,
     "aggressive_displacement": 0.025638992874769964,
-    "locked_displacement": 0.009155085537704648,
-    "aggressive": "<surface_fairing.core.bspline.BSplineSurface object at 0xffff64005750>",
-    "locked": "<surface_fairing.core.bspline.BSplineSurface object at 0xffff64005410>"
+    "locked_displacement": 0.009155085537704648
   },
   "conflict": {
     "name": "mutually_exclusive_seam",

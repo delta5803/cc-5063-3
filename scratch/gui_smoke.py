@@ -25,4 +25,19 @@ for chk in win.edge_locks.values(): chk.setChecked(False)
 win._run_fairing()
 assert "错误" in win.message.toPlainText()
 print("error surfacing OK")
+# maintenance path: conflicting offset key point -> analyze -> prune & recompute
+for chk in win.edge_locks.values(): chk.setChecked(True)
+win.key_offset.setChecked(True)
+win._analyze_constraints()
+assert "最小不可满足" in win.message.toPlainText()
+assert win.remove_combo.count() >= 2
+win._prune_and_recompute()
+assert win.result is not None and win.result.hard_constraint_error < 1e-8
+assert "重新生效条件" in win.message.toPlainText()
+print("maintenance prune path OK")
+# relaxation boundary path
+win.key_offset.setChecked(False); win.soft_lock.setChecked(True)
+win._analyze_constraints()
+assert "松弛边界" in win.message.toPlainText()
+print("maintenance relax path OK")
 print("SMOKE PASS")

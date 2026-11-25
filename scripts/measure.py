@@ -226,9 +226,25 @@ def main(outdir: str = "output/measurements") -> dict:
     export_obj(payload["over_fairing"]["locked"],
                out / "over_fairing_feature_locked.obj")
 
-    serializable = {k: v for k, v in payload.items()}
+    serializable = _strip_surface_objects(payload)
     write_report(serializable, out / "measurements.json")
     return payload
+
+
+def _strip_surface_objects(payload):
+    """Drop live BSplineSurface handles so the JSON is reproducible.
+
+    The surfaces are exported to OBJ separately; keeping their repr (a memory
+    address) in the report would change on every run and hide real drift.
+    """
+    out = {}
+    for key, value in payload.items():
+        if isinstance(value, dict):
+            out[key] = {k: v for k, v in value.items()
+                        if not hasattr(v, "evaluate")}
+        else:
+            out[key] = value
+    return out
 
 
 if __name__ == "__main__":

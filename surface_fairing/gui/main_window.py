@@ -28,6 +28,8 @@ from ..core.bspline import Metric
 from ..core.constraints import HardConstraints, make_ring_soft_lock
 from ..core.curvature import curvature_change, curvature_field, isophote_field
 from ..core.fairing import fair_surface
+from ..core.maintenance import (
+    analyze, recompute_after_removal, units_from_hard)
 from ..io_.artifacts import (
     over_fairing_case, rippled_curved, rippled_plane)
 from ..io_.export import export_obj, write_report
@@ -82,11 +84,35 @@ class FairingWindow(QWidget):
             self.edge_locks[edge] = chk
         self.key_lock = QCheckBox("保留中心点 S(0.5,0.5) (关键点硬约束)")
         cb.addWidget(self.key_lock)
+        self.key_offset = QCheckBox(
+            "关键点改为 S(0,0.5) 且抬到 z=0.5 (与 u0 锁定冲突, 维护案例)")
+        self.key_offset.setChecked(False)
+        cb.addWidget(self.key_offset)
         self.soft_lock = QCheckBox("u0 邻环软锁定 (冲突时可松弛)")
         cb.addWidget(self.soft_lock)
         self.soft_weight = self._spin(cb, "软约束权重", 100.0, 0.0, 1e5,
                                       decimals=2)
         control.addWidget(con_box)
+
+        maint_box = QGroupBox("5. 约束维护 / Constraint maintenance")
+        mbx = QVBoxLayout(maint_box)
+        self.maint_note = QLabel(
+            "识别不可同时满足的硬约束子集。prune = 硬-硬秩不相容(无松弛量可解,"
+            " 必须删一项); relax = 软锁定, 只牺牲偏离量。分析后选择一项剪除,"
+            " 由光顺内核重解并给出重新生效的条件。")
+        self.maint_note.setWordWrap(True)
+        mbx.addWidget(self.maint_note)
+        self.analyze_btn = QPushButton("分析约束图 / Analyze")
+        self.analyze_btn.clicked.connect(self._analyze_constraints)
+        mbx.addWidget(self.analyze_btn)
+        self.remove_combo = QComboBox()
+        self.remove_combo.setEnabled(False)
+        mbx.addWidget(self.remove_combo)
+        self.remove_btn = QPushButton("剪除选中项并重算 / Prune & recompute")
+        self.remove_btn.setEnabled(False)
+        self.remove_btn.clicked.connect(self._prune_and_recompute)
+        mbx.addWidget(self.remove_btn)
+        control.addWidget(maint_box)
 
         opt_box = QGroupBox("4. 能量权重 / Energy weights")
         ob = QVBoxLayout(opt_box)
@@ -162,6 +188,10 @@ class FairingWindow(QWidget):
             self.attach_w.setValue(0.2)
         self.surface = self.artifact.surface
         self.result = None
+        self.maintenance = None
+        self.remove_combo.clear()
+        self.remove_combo.setEnabled(False)
+        self.remove_btn.setEnabled(False)
         self.export_btn.setEnabled(False)
         self._message(f"已加载 {self.artifact.name}: {self.artifact.description}")
         self._plot_initial()
@@ -177,6 +207,9 @@ class FairingWindow(QWidget):
             hard.pin_edge(surf, edge)
         if self.key_lock.isChecked():
             hard.pin_surface_point(surf, 0.5, 0.5)
+        if self.key_offset.isChecked():
+            hard.pin_surface_point(surf, 0.0, 0.5,
+                                   position=np.array([0.0, 0.5, 0.5]))
         soft = ([make_ring_soft_lock(surf, "u0", self.soft_weight.value())]
                 if self.soft_lock.isChecked() else [])
         return hard, soft, locked
@@ -203,6 +236,78 @@ class FairingWindow(QWidget):
                 QMessageBox.critical(
                     self, "光顺失败 / Fairing error",
                     f"{exc}\n\n{detail}")
+
+    # ------------------------------------------------------------ maintenance
+    def _analyze_constraints(self):
+        try:
+            hard, soft, _ = self._build_constraints()
+            self.maintenance = analyze(self.surface, hard, soft)
+        except Exception as exc:
+            self._message("维护分析失败 / Analysis error: " + str(exc))
+            if not getattr(self, "testing", False):
+                QMessageBox.critical(self, "约束维护分析失败", str(exc))
+            return
+        rep = self.maintenance
+        units = units_from_hard(hard)
+        lines = [f"约束单元 ({len(units)}): "
+                 + ", ".join(u.label for u in units)]
+        if rep.minimal_conflict is None:
+            lines.append("硬约束集合可行: 无不可同时满足的子集。")
+        else:
+            lines.append(f"最小不可满足硬约束子集: {rep.minimal_conflict}")
+        for e in rep.edges:
+            if e.kind == "prune":
+                lines.append(f"  prune {e.a} <-> {e.b}: {e.detail}")
+            else:
+                lines.append(f"  relax {e.b}: 最小允许偏离 "
+                             f"{e.min_deviation:.3e}, 容差内={e.feasible_at_tolerance}")
+        for key, b in rep.relaxation_boundaries.items():
+            if key == "_hard_infeasible":
+                lines.append("  硬集本身就不可行, 松弛扫描已跳过; 先剪除一条硬约束。")
+            elif b.weights:
+                lines.append(
+                    f"  松弛边界 {key}: 权重 {b.weights} -> 偏离 "
+                    f"{[round(d, 6) for d in b.deviations]}, 最小 "
+                    f"{b.min_deviation:.3e}")
+        self._message("\n".join(lines))
+
+        # populate the prune candidates from the minimal conflict, else all hard
+        self.remove_combo.clear()
+        candidates = rep.minimal_conflict or [u.label for u in units]
+        self.remove_combo.addItems(candidates)
+        self.remove_combo.setEnabled(True)
+        self.remove_btn.setEnabled(True)
+
+    def _prune_and_recompute(self):
+        if self.maintenance is None:
+            return
+        label = self.remove_combo.currentText()
+        hard, soft, locked = self._build_constraints()
+        try:
+            removal = recompute_after_removal(
+                self.surface, hard, label, soft=soft,
+                gauss_order=self.gauss_order.value(),
+                bend_weight=self.bend_w.value(),
+                bend_mode=self.bend_mode.currentText().split()[0],
+                memb_weight=self.memb_w.value(),
+                attachment_weight=self.attach_w.value(),
+                tangent_edges=tuple(locked))
+        except Exception as exc:
+            self._message("重算失败 / Recompute error: " + str(exc))
+            if not getattr(self, "testing", False):
+                QMessageBox.critical(self, "剪除重算失败", str(exc))
+            return
+        if removal.fairing is None:
+            self._message(f"剪除 {label} 后仍不可行: {removal.error}")
+            return
+        self.result = removal.fairing
+        self.export_btn.setEnabled(True)
+        self._report_numbers()
+        self._plot_results()
+        self._message(
+            f"已剪除 {label} 并由光顺内核重解; 硬约束误差 "
+            f"{removal.fairing.hard_constraint_error:.3e}. 重新生效条件: "
+            f"{removal.condition}")
 
     # ------------------------------------------------------------------ plots
     def _plot_initial(self):
@@ -332,6 +437,12 @@ class FairingWindow(QWidget):
             "hard_constraint_error": self.result.hard_constraint_error,
             "position_residual": self.result.position_residual,
             "soft_events": self.result.soft_events,
+            "maintenance": None if self.maintenance is None else {
+                "minimal_conflict": self.maintenance.minimal_conflict,
+                "edges": [{"kind": e.kind, "a": e.a, "b": e.b,
+                           "min_deviation": e.min_deviation}
+                          for e in self.maintenance.edges],
+            },
         }
         report = write_report(payload, folder / f"{self.surface.name}_report.json")
         self._message(f"已导出真实曲面: {obj}\n报告: {report}")

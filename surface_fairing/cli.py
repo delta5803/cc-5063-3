@@ -99,7 +99,8 @@ def run(argv: list[str] | None = None) -> int:
             "before_direct": result.direct_before,
             "after_direct": result.direct_after,
             "reduction_ratio": result.energy_reduction_ratio,
-            "mean_filter_energy_for_comparison": direct_energy(filtered),
+            "mean_filter_energy_for_comparison": direct_energy(
+                filtered, bend_mode=bend_mode),
         },
         "errors": {
             "hard_constraint_max": result.hard_constraint_error,

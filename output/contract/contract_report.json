@@ -1,0 +1,144 @@
+{
+  "clean_dir": "output/contract",
+  "claims": [
+    {
+      "name": "locked_boundary_exact",
+      "description": "hard edge locks keep every boundary sample fixed to machine precision",
+      "passes": true,
+      "measured": {
+        "hard_constraint_error": 3.3306690738754696e-16,
+        "max_edge_displacement": 4.710277376051325e-16
+      },
+      "tolerance": {
+        "hard_constraint_error": 1e-09,
+        "edge_displacement": 1e-09
+      }
+    },
+    {
+      "name": "energy_decreases",
+      "description": "direct re-integrated energy strictly decreases and matches the reported values",
+      "passes": "True",
+      "measured": {
+        "plane": {
+          "bend_mode": "normal",
+          "direct_before": 0.9643518406284979,
+          "direct_after": 0.004227881933222311,
+          "reduction_ratio": 0.9956158304934982,
+          "reintegr_before": 0.9643518406284979,
+          "reintegr_after": 0.004227881933222311
+        },
+        "curved": {
+          "bend_mode": "jerk",
+          "direct_before": 34364.87571319857,
+          "direct_after": 22945.50262046455,
+          "reduction_ratio": 0.33229781443231476,
+          "reintegr_before": 34364.87571319857,
+          "reintegr_after": 22945.50262046455
+        }
+      },
+      "tolerance": {}
+    },
+    {
+      "name": "doc_curve_reproducible",
+      "description": "documented ripple-removal curve anchors re-solve and match docs/curves.json, with exact locked boundary",
+      "passes": true,
+      "measured": {
+        "anchors": [
+          {
+            "grid": 9,
+            "waves": 3,
+            "hf_removal_ratio": 0.9412845448255804,
+            "max_edge_displacement": 4.710277376051325e-16,
+            "energy_reduction_ratio": 0.9956158304934982
+          },
+          {
+            "grid": 17,
+            "waves": 3,
+            "hf_removal_ratio": 0.8185188847537781,
+            "max_edge_displacement": 4.710277376051325e-16,
+            "energy_reduction_ratio": 0.9677264653576856
+          }
+        ],
+        "compared_to": "/workspace/docs/curves.json",
+        "curve_file_present": true
+      },
+      "tolerance": {}
+    },
+    {
+      "name": "curved_patch_retains_dome",
+      "description": "curvature-variation fairing keeps the smooth dome and reduces ripple instead of flattening",
+      "passes": "True",
+      "measured": {
+        "center_z": 0.24517773692411846,
+        "base_center_z": 0.25,
+        "rms_to_base_before": 0.0011502092780959568,
+        "rms_to_base_after": 0.0009483762163393562,
+        "energy_reduction_ratio": 0.33229781443231476,
+        "hard_constraint_error": 3.3306690738754696e-16
+      },
+      "tolerance": {
+        "center_z": 0.02,
+        "rms_growth": 0.001
+      }
+    },
+    {
+      "name": "over_fairing_is_failure_not_success",
+      "description": "energy reduction alone does not preserve the design feature; the key-point lock does",
+      "passes": true,
+      "measured": {
+        "key_height": 0.06746113812175068,
+        "aggressive_key_height": 0.05228592631961223,
+        "locked_key_height": 0.0674611381217507,
+        "aggressive_energy_reduction": 0.3421051810235668,
+        "locked_energy_reduction": 0.2585223014502802
+      },
+      "tolerance": {}
+    },
+    {
+      "name": "quadratic_matches_direct",
+      "description": "frozen-area quadratic energy equals direct integration on the reference surface for all bend modes",
+      "passes": "True",
+      "measured": {
+        "normal": {
+          "quadratic": 10.095955147689017,
+          "direct": 10.095955147689086,
+          "rel_error": 6.861947752656879e-15
+        },
+        "thin_plate": {
+          "quadratic": 12.645764066087041,
+          "direct": 12.645764066110967,
+          "rel_error": 1.8919972051352697e-12
+        },
+        "jerk": {
+          "quadratic": 34364.87571319246,
+          "direct": 34364.87571319857,
+          "rel_error": 1.7785032737850724e-13
+        }
+      },
+      "tolerance": {
+        "rel_error": 1e-09
+      }
+    },
+    {
+      "name": "soft_relaxation_reported",
+      "description": "soft locks are relaxed openly and never corrupt hard feasibility",
+      "passes": true,
+      "measured": {
+        "events": [],
+        "hard_constraint_error": 3.3306690738754696e-16
+      },
+      "tolerance": {}
+    }
+  ],
+  "code_manifest_sha256": {
+    "core/bspline.py": "a6b55a06053746fcf9c0b001f38a61c2ce2f989f593f95f07ab6fcc7f303460a",
+    "core/energy.py": "ad8edf7667f35774e8cc45bd90c80410138d2a536c7db96c9dffeb283bb146e1",
+    "core/constraints.py": "2ae6bc0ab3306e24b60ca6060973463a695eb82a213cf8c7461cd1553f0bc81e",
+    "core/solver.py": "d2596dcb7f024e9bf46cb3bc48de6564cabf5378ebc788b31c4a8d1e6d7dfca1",
+    "core/fairing.py": "3c4b07c2d83c012f2b3bb2b77ec4f249c3f67865c344adc83fef81a081d71788",
+    "core/curvature.py": "3bcf1000771c3e4b1742adedf008908e2d81d0577dc60a5bbfe4a859a88e7298",
+    "io_/artifacts.py": "ba196ad125cab92ee0e14f267d68e03b06bcfef7220edc50c74bd064f1cb13d4",
+    "cli.py": "09b1c4175a8bcd504b875ae596792112023ceb56279a3250ba48320d83c5cbe9",
+    "scripts/generate_doc_curves.py": "6feded8861027a1d074d3d4cfb314edf0cb78b1a02421eee9fa08a10bdc3a6c5"
+  }
+}

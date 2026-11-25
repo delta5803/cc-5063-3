@@ -1,28 +1,31 @@
 {
   "artifact": "plane",
   "metric": "constant declared metric: ds~1*du, dt~1*dv (non-uniform parameterization is not represented)",
+  "bend_mode": "normal",
+  "attachment_weight": 0.3,
+  "energy_normalization_scale": 104.10326845371686,
   "n_control_points": 81,
-  "gauss_integration_points": 9,
+  "gauss_integration_points": 324,
   "energy": {
-    "before_direct": 0.4217597134227347,
-    "after_direct": 0.28090881135515516,
-    "reduction_ratio": 0.9999997110110839,
-    "mean_filter_energy_for_comparison": 7.196166139124165
+    "before_direct": 0.9643518406284979,
+    "after_direct": 0.004227881933222311,
+    "reduction_ratio": 0.9956158304934982,
+    "mean_filter_energy_for_comparison": 0.0013336471640806606
   },
   "errors": {
     "hard_constraint_max": 3.3306690738754696e-16,
-    "max_surface_position_residual": 0.00538358001493819
+    "max_surface_position_residual": 0.009755142535456472
   },
   "curvature": {
     "mean_before_max_abs": 3.2624991684791183,
-    "mean_after_max_abs": 2.792863202648989,
-    "mean_change_max_abs": 0.9539218402331273,
-    "gaussian_change_max_abs": 40.264446986150084
+    "mean_after_max_abs": 0.2312096501777076,
+    "mean_change_max_abs": 3.031289521035979,
+    "gaussian_change_max_abs": 93.99143500472978
   },
   "solver": {
     "message": "optimal",
     "ridge_used": 1e-10,
-    "condition_number": 6187.280802042926,
+    "condition_number": 28.887971678864837,
     "pinned_dofs": [
       0,
       1,
