@@ -1,0 +1,164 @@
+{
+  "plane": {
+    "name": "rippled_plane",
+    "kind": "plane",
+    "bend_mode": "normal",
+    "known_ripple_amplitude": 0.04,
+    "energy": {
+      "before": 0.9643518406284979,
+      "after": 0.004227881933222311,
+      "reduction_ratio": 0.9956158304934982,
+      "mean_filter_after": 0.0013336471640806606
+    },
+    "constraint_error_max": 3.3306690738754696e-16,
+    "shape_displacement_max": 0.009755142535456472,
+    "curvature_before": {
+      "mean_abs_max": 3.2624991684791183,
+      "mean_rms": 0.7107144712288525,
+      "gaussian_abs_max": 94.47839999999998,
+      "gaussian_rms": 6.209615327935149,
+      "principal_abs_max": 9.719999999999999
+    },
+    "curvature_after": {
+      "mean_abs_max": 0.2312096501777076,
+      "mean_rms": 0.04756806162164864,
+      "gaussian_abs_max": 0.48696501169529943,
+      "gaussian_rms": 0.031781542200714503,
+      "principal_abs_max": 0.6978287839400961
+    },
+    "curvature_mean_change_max": 3.031289521035979,
+    "high_frequency_rms_before": 0.0015464692275572475,
+    "high_frequency_rms_after": 9.080164460925676e-05,
+    "soft_relaxation_events": [],
+    "solver_message": "optimal",
+    "faired": "<surface_fairing.core.bspline.BSplineSurface object at 0xffff63fbb550>"
+  },
+  "curved": {
+    "name": "rippled_curved",
+    "kind": "curved",
+    "bend_mode": "jerk",
+    "known_ripple_amplitude": 0.03,
+    "energy": {
+      "before": 34364.87571319857,
+      "after": 24856.553389193745,
+      "reduction_ratio": 0.27668723156047814,
+      "mean_filter_after": 16198.18874892836
+    },
+    "constraint_error_max": 3.3306690738754696e-16,
+    "shape_displacement_max": 0.0026896653125792207,
+    "curvature_before": {
+      "mean_abs_max": 9.61774511428859,
+      "mean_rms": 1.9715902310619728,
+      "gaussian_abs_max": 566.1765357418765,
+      "gaussian_rms": 32.140464350802695,
+      "principal_abs_max": 23.79446439283466
+    },
+    "curvature_after": {
+      "mean_abs_max": 9.684077983335465,
+      "mean_rms": 1.6677830461737644,
+      "gaussian_abs_max": 530.5427761755507,
+      "gaussian_rms": 25.69261396604575,
+      "principal_abs_max": 23.033514195092998
+    },
+    "curvature_mean_change_max": 4.313044122987892,
+    "high_frequency_rms_before": 0.007995488077532687,
+    "high_frequency_rms_after": 0.007983289615490954,
+    "soft_relaxation_events": [],
+    "solver_message": "optimal",
+    "faired": "<surface_fairing.core.bspline.BSplineSurface object at 0xffff63fef910>",
+    "base_dome_retention": {
+      "rms_to_smooth_base_before": 0.001136824988476505,
+      "rms_to_smooth_base_after": 0.0009882754095771578,
+      "center_z_base": 0.24517600541410553,
+      "center_z_after": 0.24517821444199628
+    }
+  },
+  "bend_mode_comparison": {
+    "plane": [
+      {
+        "bend_mode": "normal",
+        "energy_before": 0.9643518406284979,
+        "energy_after": 0.004227881933222311,
+        "hf_rms_before": 0.0015464692275572475,
+        "hf_rms_after": 9.080164460925676e-05,
+        "shape_displacement_max": 0.009755142535456472,
+        "mean_curvature_rms_before": 0.7107144712288525,
+        "mean_curvature_rms_after": 0.04756806162164864
+      },
+      {
+        "bend_mode": "thin_plate",
+        "energy_before": 0.9896096994736312,
+        "energy_after": 0.6563191412078214,
+        "hf_rms_before": 0.0015464692275572475,
+        "hf_rms_after": 0.0010547724550496935,
+        "shape_displacement_max": 0.00566669599390378,
+        "mean_curvature_rms_before": 0.7107144712288525,
+        "mean_curvature_rms_after": 0.5151679236643686
+      },
+      {
+        "bend_mode": "jerk",
+        "energy_before": 626.603984688196,
+        "energy_after": 415.5257881238923,
+        "hf_rms_before": 0.0015464692275572475,
+        "hf_rms_after": 0.0010488661274544921,
+        "shape_displacement_max": 0.005645422832711543,
+        "mean_curvature_rms_before": 0.7107144712288525,
+        "mean_curvature_rms_after": 0.5126700904428475
+      }
+    ],
+    "curved": [
+      {
+        "bend_mode": "normal",
+        "energy_before": 10.095955147689086,
+        "energy_after": 2.684980270029622,
+        "hf_rms_before": 0.007995488077532687,
+        "hf_rms_after": 0.007723498382002143,
+        "shape_displacement_max": 0.00732324006218959,
+        "mean_curvature_rms_before": 1.9715902310619728,
+        "mean_curvature_rms_after": 1.04408871743266,
+        "rms_to_smooth_base_after": 0.0036368132977595453
+      },
+      {
+        "bend_mode": "thin_plate",
+        "energy_before": 12.645764066110967,
+        "energy_after": 9.52022268671919,
+        "hf_rms_before": 0.007995488077532687,
+        "hf_rms_after": 0.007886204108090152,
+        "shape_displacement_max": 0.004002254710206664,
+        "mean_curvature_rms_before": 1.9715902310619728,
+        "mean_curvature_rms_after": 1.6250488411326194,
+        "rms_to_smooth_base_after": 0.002095358068640712
+      },
+      {
+        "bend_mode": "jerk",
+        "energy_before": 34364.87571319857,
+        "energy_after": 22945.50262046455,
+        "hf_rms_before": 0.007995488077532687,
+        "hf_rms_after": 0.007974611910312448,
+        "shape_displacement_max": 0.002689681213560649,
+        "mean_curvature_rms_before": 1.9715902310619728,
+        "mean_curvature_rms_after": 1.5980472389042264,
+        "rms_to_smooth_base_after": 0.0009373902619296307
+      }
+    ]
+  },
+  "over_fairing": {
+    "name": "over_fairing_feature_bump",
+    "retained_as_failure_case": true,
+    "original_key_height": 0.06746113812175068,
+    "aggressive_no_lock_key_height": 0.05228592631961223,
+    "locked_key_height": 0.0674611381217507,
+    "aggressive_displacement": 0.025638992874769964,
+    "locked_displacement": 0.009155085537704648,
+    "aggressive": "<surface_fairing.core.bspline.BSplineSurface object at 0xffff64005750>",
+    "locked": "<surface_fairing.core.bspline.BSplineSurface object at 0xffff64005410>"
+  },
+  "conflict": {
+    "name": "mutually_exclusive_seam",
+    "retained_as_failure_case": true,
+    "seam_gap": 1.0012492197250393,
+    "contour_error_a": 2.220446049250313e-16,
+    "contour_error_b": 2.220446049250313e-16,
+    "note": "fixed edges disagree; concession must be authorized explicitly"
+  }
+}

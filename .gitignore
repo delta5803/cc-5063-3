@@ -23,3 +23,10 @@ __pycache__/
 *.log
 .env
 .env.*
+
+# Local setup downloads and duplicate CLI smoke-test output
+/scratch/aptcache/
+/scratch/aptlists/
+/scratch/debs/
+/scratch/get-pip.py
+/scratch/cli_out/

@@ -1,0 +1,13 @@
+plane [normal]: energy 0.96435 -> 0.38502 (60.1%), constraint err 3.33e-16, displacement 0.00976, HF rms 0.00155 -> 0.00088
+curved [jerk]: energy 34364.87571 -> 24856.55339 (27.7%), constraint err 3.33e-16, displacement 0.00269, HF rms 0.00800 -> 0.00798
+    dome retention: rms-to-base 0.00114 -> 0.00099, center z 0.2452 (base 0.2452)
+mode comparison (plane):
+    normal     E 0.9644->0.004228 HF 0.00155->0.00009 H_rms 0.7107->0.0476
+    thin_plate E 0.9896->0.6563 HF 0.00155->0.00105 H_rms 0.7107->0.5152
+    jerk       E 626.6->415.5 HF 0.00155->0.00105 H_rms 0.7107->0.5127
+mode comparison (curved):
+    normal     E 10.1->2.685 HF 0.00800->0.00772 H_rms 1.9716->1.0441
+    thin_plate E 12.65->9.52 HF 0.00800->0.00789 H_rms 1.9716->1.6250
+    jerk       E 3.436e+04->2.295e+04 HF 0.00800->0.00797 H_rms 1.9716->1.5980
+over_fairing retained case: {'name': 'over_fairing_feature_bump', 'retained_as_failure_case': True, 'original_key_height': 0.06746113812175068, 'aggressive_no_lock_key_height': 0.05228592631961223, 'locked_key_height': 0.0674611381217507, 'aggressive_displacement': 0.025638992874769964, 'locked_displacement': 0.009155085537704648}
+conflict retained case: {'name': 'mutually_exclusive_seam', 'retained_as_failure_case': True, 'seam_gap': 1.0012492197250393, 'contour_error_a': 2.220446049250313e-16, 'contour_error_b': 2.220446049250313e-16, 'note': 'fixed edges disagree; concession must be authorized explicitly'}
